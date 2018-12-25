@@ -1,8 +1,10 @@
-hash: 38ea6a2c81307ebe42e3f38e2b1ec95815eb581484d0c11c56f831a25cdbfc5c
-updated: 2018-12-25T19:01:04.157037586Z
+hash: a4fd489c04539914dc4df94101452a5c788e687beff5773c79e806cefd5c19e7
+updated: 2018-12-25T20:16:41.662850535Z
 imports:
 - name: github.com/gin-contrib/sse
   version: 22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae
+- name: github.com/gin-gonic/autotls
+  version: 5b3297bdcee778ff3bbdc99ab7c41e1c2677d22d
 - name: github.com/gin-gonic/gin
   version: b869fe1415e4b9eb52f247441830d502aece2d4d
   subpackages:
@@ -25,6 +27,11 @@ imports:
   version: 772ced7fd4c2f6322c07537a9a93b68d74551fa6
   subpackages:
   - codec
+- name: golang.org/x/crypto
+  version: 505ab145d0a99da450461ae2c1a9f6cd10d1f447
+  subpackages:
+  - acme
+  - acme/autocert
 - name: golang.org/x/sys
   version: b4a75ba826a64a70990f11a225237acd6ef35c9f
   subpackages:
