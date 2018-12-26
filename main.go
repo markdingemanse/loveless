@@ -43,7 +43,6 @@ func routes(router *gin.Engine) *gin.Engine {
             getDbPassword(),
             getDbName());
 
-        // db, err := gorm.Open("mysql", "homestead:secret@/homestead?charset=utf8&parseTime=True&loc=Local");
         db, err := gorm.Open("mysql", dbURI);
 
         if (err != nil) {
