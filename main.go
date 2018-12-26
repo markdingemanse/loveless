@@ -38,7 +38,13 @@ func router() *gin.Engine {
 func routes(router *gin.Engine) *gin.Engine {
     //basic ping test with a simple db check.
     router.GET("/", func(c *gin.Context) {
-        db, err := gorm.Open("mysql", "homestead:secret@/homestead?charset=utf8&parseTime=True&loc=Local");
+        dbURI := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True",
+            getDbUser(),
+            getDbPassword(),
+            getDbName());
+
+        // db, err := gorm.Open("mysql", "homestead:secret@/homestead?charset=utf8&parseTime=True&loc=Local");
+        db, err := gorm.Open("mysql", dbURI);
 
         if (err != nil) {
             fmt.Println("db error: ", err);
@@ -58,4 +64,16 @@ func routes(router *gin.Engine) *gin.Engine {
 // Get the current app mode we are running under.
 func getAppMode() string {
     return os.Getenv("LOVELESS_MODE");
+}
+
+func getDbUser() string {
+    return os.Getenv("LOVELESS_DB_USER");
+}
+
+func getDbPassword() string {
+    return os.Getenv("LOVELESS_DB_PASSWORD");
+}
+
+func getDbName() string {
+    return os.Getenv("LOVELESS_DB_NAME");
 }
