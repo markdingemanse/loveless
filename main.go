@@ -5,7 +5,15 @@ import (
     "os"
     "github.com/gin-gonic/autotls"
     "github.com/gin-gonic/gin"
+
+    "github.com/jinzhu/gorm"
+      _ "github.com/jinzhu/gorm/dialects/mysql"
 );
+
+type Rss struct {
+  gorm.Model
+  FirstPost   string
+}
 
 func main() {
         router := routes(router());
@@ -28,8 +36,20 @@ func router() *gin.Engine {
 
 // Provisions the provided router with the needed routes.
 func routes(router *gin.Engine) *gin.Engine {
+    //basic ping test with a simple db check.
     router.GET("/", func(c *gin.Context) {
-            c.String(200, "pong");
+        db, err := gorm.Open("mysql", "homestead:secret@/homestead?charset=utf8&parseTime=True&loc=Local");
+
+        if (err != nil) {
+            fmt.Println("db error: ", err);
+        }
+
+        firstRss := Rss{};
+        db.Table("rss").First(&firstRss);
+        fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + firstRss.FirstPost);
+
+        c.String(200, "pong");
+        db.Close();
     });
 
     return router;
