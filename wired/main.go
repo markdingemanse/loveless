@@ -6,14 +6,11 @@ import (
     "github.com/gin-gonic/autotls"
     "github.com/gin-gonic/gin"
 
+    "github.com/markdingemanse/loveless/models"
+
     "github.com/jinzhu/gorm"
       _ "github.com/jinzhu/gorm/dialects/mysql"
 );
-
-type Rss struct {
-  gorm.Model
-  FirstPost   string
-}
 
 func main() {
         router := routes(router());
@@ -49,7 +46,7 @@ func routes(router *gin.Engine) *gin.Engine {
             fmt.Println("db error: ", err);
         }
 
-        firstRss := Rss{};
+        firstRss := models.Rss{};
         db.Table("rss").First(&firstRss);
         fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + firstRss.FirstPost);
 
