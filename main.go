@@ -1,9 +1,10 @@
 package main;
 
 import (
-        "log"
-        "github.com/gin-gonic/autotls"
-        "github.com/gin-gonic/gin"
+    "fmt"
+    "os"
+    "github.com/gin-gonic/autotls"
+    "github.com/gin-gonic/gin"
 );
 
 func main() {
@@ -14,5 +15,15 @@ func main() {
                 c.String(200, "pong");
         })
 
-        log.Fatal(autotls.Run(r, "lovelesswired.com", "www.lovelesswired.com"));
+        var mode string;
+        mode = os.Getenv("LOVELESS_MODE");
+
+        fmt.Println("[MAIN] Running Gin in mode: " + mode);
+
+        if (mode == "dev") {
+            r.Run();
+        } else {
+            // log.Fatal(autotls.Run(r, "lovelesswired.com", "www.lovelesswired.com"));
+            autotls.Run(r, "lovelesswired.com", "www.lovelesswired.com");
+        }
 }
