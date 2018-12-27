@@ -2,11 +2,13 @@ package managers;
 
 import (
     "fmt"
+    "reflect"
 
     "github.com/gin-gonic/gin"
     "github.com/gin-gonic/autotls"
 
-    models "github.com/markdingemanse/loveless/models"
+    models   "github.com/markdingemanse/loveless/models"
+    handlers "github.com/markdingemanse/loveless/handlers"
 
     "github.com/jinzhu/gorm"
       _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -51,6 +53,10 @@ func routes(router *gin.Engine) *gin.Engine {
         firstRss := models.Rss{};
         db.Table("rss").First(&firstRss);
         fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + firstRss.FirstPost);
+
+        handlers.Functions("rss")();
+
+        fmt.Printf("%v\n", res );
 
         c.String(200, "pong");
         db.Close();
