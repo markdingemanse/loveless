@@ -2,19 +2,30 @@ package managers;
 
 import (
     "fmt"
-    "os"
 
     "github.com/gin-gonic/gin"
+    "github.com/gin-gonic/autotls"
 
-    "github.com/markdingemanse/loveless/models"
-    
+    models "github.com/markdingemanse/loveless/models"
+
     "github.com/jinzhu/gorm"
       _ "github.com/jinzhu/gorm/dialects/mysql"
 );
 
-
-func initRouter() *gin.Engine {
+// create the app engine and provision the created router.
+func InitRouter() *gin.Engine {
     return routes(router());
+}
+
+// start the router for the correct situation
+func StartRouter(router *gin.Engine, dev bool) {
+    if (dev) {
+        fmt.Println("[MAIN] Running Gin in dev mode");
+        router.Run();
+    } else {
+        fmt.Println("[MAIN] Running Gin in live mode with ssl");
+        autotls.Run(router, "lovelesswired.com", "www.lovelesswired.com");
+    }
 }
 
 // Bootstraps the basic gin router.
@@ -27,9 +38,9 @@ func routes(router *gin.Engine) *gin.Engine {
     //basic ping test with a simple db check.
     router.GET("/", func(c *gin.Context) {
         dbURI := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True",
-            getDbUser(),
-            getDbPassword(),
-            getDbName());
+            Config("LOVELESS_DB_USER"),
+            Config("LOVELESS_DB_PASSWORD"),
+            Config("LOVELESS_DB_NAME"));
 
         db, err := gorm.Open("mysql", dbURI);
 
@@ -46,16 +57,4 @@ func routes(router *gin.Engine) *gin.Engine {
     });
 
     return router;
-}
-
-func getDbUser() string {
-    return os.Getenv("LOVELESS_DB_USER");
-}
-
-func getDbPassword() string {
-    return os.Getenv("LOVELESS_DB_PASSWORD");
-}
-
-func getDbName() string {
-    return os.Getenv("LOVELESS_DB_NAME");
 }
