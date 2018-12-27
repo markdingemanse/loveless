@@ -1,15 +1,16 @@
-package "services"
+package services;
 
 import (
     "fmt"
 )
 
-func Functions(key string) func {
-    return map[string]func(int, int) int {
-        "rss": rss,
-    }[key];
+// Gets the needed function to run dynamicly based on a k / v array.
+func Functions(key string) func() {
+    return map[string] func() {
+        "rss": rss}[key];
 }
 
+// TODO::handle rss
 func rss() {
-    fmt.Println("[RSS_HANDLER] reached the handler rss function"));
+    fmt.Println("[RSS_HANDLER] reached the handler rss function");
 }
