@@ -51,7 +51,7 @@ func routes(router *gin.Engine) *gin.Engine {
 
         firstRss := models.Rss{};
         db.Table("rss").First(&firstRss);
-        fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + firstRss.FirstPost);
+        fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + firstRss.GetFirstPost());
 
         f := handlers.Functions("rss");
         f();
