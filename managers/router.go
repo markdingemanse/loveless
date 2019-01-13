@@ -11,8 +11,8 @@ import (
     handlers "github.com/markdingemanse/loveless/services"
     configs "github.com/markdingemanse/loveless/configs"
 
-    "github.com/jinzhu/gorm"
-      _ "github.com/jinzhu/gorm/dialects/mysql"
+    // "github.com/jinzhu/gorm"
+    //   _ "github.com/jinzhu/gorm/dialects/mysql"
 );
 
 // create the app engine and provision the created router.
@@ -45,20 +45,12 @@ func IsDevMode() bool {
 func routes(router *gin.Engine) *gin.Engine {
     //basic ping test with a simple db check.
     router.GET("/", func(c *gin.Context) {
-        dbURI := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True",
-            configs.Config("LOVELESS_DB_USER"),
-            configs.Config("LOVELESS_DB_PASSWORD"),
-            configs.Config("LOVELESS_DB_NAME"));
+        uri := DatabaseUrl();
+        db := OpenDbConnection(uri);
 
-        db, err := gorm.Open("mysql", dbURI);
-
-        if (err != nil) {
-            fmt.Println("db error: ", err);
-        }
-
-        firstRss := knowledgeModels.Rss{};
-        db.Table("rss").First(&firstRss);
-        fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + firstRss.GetFirstPost());
+        model := knowledgeModels.CreateModel();
+        SelectTable("rss", db).First(&model);
+        fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + model.GetFirstPost());
 
         f := handlers.Functions("rss");
         f();

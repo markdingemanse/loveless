@@ -13,3 +13,7 @@ type Rss struct {
 func (rss Rss) GetFirstPost() string {
     return rss.FirstPost
 }
+
+func CreateModel() Rss {
+    return Rss{};
+}

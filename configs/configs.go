@@ -2,8 +2,6 @@ package configs;
 
 import (
     "os"
-
-    configs "github.com/markdingemanse/loveless/configs"
 );
 
 // get a OS env var from key basis
@@ -20,11 +18,4 @@ func IsDevMode() bool {
     }
 
     return false;
-}
-
-// What things the ai is able to do.
-func Knowledge() array {
-    return [
-        "rss": rss
-    ];
 }
