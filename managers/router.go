@@ -6,7 +6,8 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/gin-gonic/autotls"
 
-    models   "github.com/markdingemanse/loveless/behaviour/models"
+    // behaviourModels "github.com/markdingemanse/loveless/models/behaviour"
+    knowledgeModels "github.com/markdingemanse/loveless/models/knowledge"
     handlers "github.com/markdingemanse/loveless/services"
 
     "github.com/jinzhu/gorm"
@@ -49,7 +50,7 @@ func routes(router *gin.Engine) *gin.Engine {
             fmt.Println("db error: ", err);
         }
 
-        firstRss := models.Rss{};
+        firstRss := knowledgeModels.Rss{};
         db.Table("rss").First(&firstRss);
         fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + firstRss.GetFirstPost());
 
