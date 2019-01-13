@@ -6,7 +6,7 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/gin-gonic/autotls"
 
-    models   "github.com/markdingemanse/loveless/behaviour/models"
+    models   "github.com/markdingemanse/loveless/models"
     handlers "github.com/markdingemanse/loveless/services"
 
     "github.com/jinzhu/gorm"
