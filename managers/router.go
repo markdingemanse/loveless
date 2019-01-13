@@ -9,6 +9,7 @@ import (
     // behaviourModels "github.com/markdingemanse/loveless/models/behaviour"
     knowledgeModels "github.com/markdingemanse/loveless/models/knowledge"
     handlers "github.com/markdingemanse/loveless/services"
+    configs "github.com/markdingemanse/loveless/configs"
 
     "github.com/jinzhu/gorm"
       _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -35,14 +36,19 @@ func router() *gin.Engine {
     return gin.Default();
 }
 
+// What mode are we running on? Proxy function to prevent dependency circle
+func IsDevMode() bool {
+    return configs.IsDevMode();
+}
+
 // Provisions the provided router with the needed routes.
 func routes(router *gin.Engine) *gin.Engine {
     //basic ping test with a simple db check.
     router.GET("/", func(c *gin.Context) {
         dbURI := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True",
-            Config("LOVELESS_DB_USER"),
-            Config("LOVELESS_DB_PASSWORD"),
-            Config("LOVELESS_DB_NAME"));
+            configs.Config("LOVELESS_DB_USER"),
+            configs.Config("LOVELESS_DB_PASSWORD"),
+            configs.Config("LOVELESS_DB_NAME"));
 
         db, err := gorm.Open("mysql", dbURI);
 

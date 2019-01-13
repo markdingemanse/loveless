@@ -7,7 +7,7 @@ import (
 // Gets the needed function to run dynamicly based on a k / v array.
 func Functions(key string) func() {
     return map[string] func() {
-        "rss": rss}[key];
+        configs.Knowledge()}[key];
 }
 
 // TODO::handle rss
