@@ -7,9 +7,10 @@ import (
     "github.com/gin-gonic/autotls"
 
     // behaviourModels "github.com/markdingemanse/loveless/models/behaviour"
-    knowledgeModels "github.com/markdingemanse/loveless/models/knowledge"
-    handlers "github.com/markdingemanse/loveless/services"
     configs "github.com/markdingemanse/loveless/configs"
+    handlers "github.com/markdingemanse/loveless/services"
+    helpers "github.com/markdingemanse/loveless/services/helpers"
+    knowledgeModels "github.com/markdingemanse/loveless/models/knowledge"
 
     // "github.com/jinzhu/gorm"
     //   _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -45,11 +46,11 @@ func IsDevMode() bool {
 func routes(router *gin.Engine) *gin.Engine {
     //basic ping test with a simple db check.
     router.GET("/", func(c *gin.Context) {
-        uri := DatabaseUrl();
-        db := OpenDbConnection(uri);
+        uri := helpers.DatabaseUrl();
+        db := helpers.OpenDbConnection(uri);
 
         model := knowledgeModels.CreateModel();
-        SelectTable("rss", db).First(&model);
+        helpers.SelectTable("rss", db).First(&model);
         fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + model.GetFirstPost());
 
         f := handlers.Functions("rss");
