@@ -15,6 +15,12 @@ func Functions(key string) func() {
 // TODO::handle rss
 func rss() {
     fmt.Println("[RSS_HANDLER] reached the handler rss function");
-    // helpers.SendGetRequest("https://jsonplaceholder.typicode.com/todos/1");
-    helpers.SendGetRequest("https://www.reddit.com/r/symphonicmetal/new.json?sort=new&limit=1", "loveless");
+
+    parsed, err := helpers.SendGetRequest("https://www.reddit.com/r/symphonicmetal/new.json?sort=new&limit=1", "loveless");
+
+    if err != nil {
+        fmt.Println("[RSS_HANDLER] error: " + err.Error())
+    }
+
+    fmt.Println("[RSS_HANDLER] finished rss most recent post is: " + parsed);
 }

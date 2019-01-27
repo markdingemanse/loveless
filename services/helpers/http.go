@@ -1,7 +1,7 @@
 package managers;
 
 import (
-    "encoding/json"
+    // "encoding/json"
     "fmt"
     "io/ioutil"
     "net/http"
@@ -12,10 +12,10 @@ import (
 );
 
 // Send a request.
-func SendGetRequest(url string, userAgent string) {
+func SendGetRequest(url string, userAgent string) (string, error) {
     req, err := http.NewRequest("GET", url, nil)
     if err != nil {
-        return
+        return "error", err;
     }
     req.Header.Set("User-Agent", userAgent)
 
@@ -29,8 +29,12 @@ func SendGetRequest(url string, userAgent string) {
     body, err := ioutil.ReadAll(resp.Body);
     defer resp.Body.Close();
 
-    var data map[string]interface{};
-    json.Unmarshal([]byte(body), &data);
+    // var data map[string]interface{};
+    //
+    // json.Unmarshal([]byte(body), &data);
 
-    fmt.Println(data["modhash"]);
+    hash  := gjson.Get(string(body), "data.children.#.title");
+    title := hash.Array()[0].String()
+
+    return title, nil;
 }
