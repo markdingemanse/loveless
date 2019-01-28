@@ -16,11 +16,7 @@ func Functions(key string) func() {
 func rss() {
     fmt.Println("[RSS_HANDLER] reached the handler rss function");
 
-    parsed, err := helpers.SendGetRequest("https://www.reddit.com/r/symphonicmetal/new.json?sort=new&limit=1", "loveless");
-
-    if err != nil {
-        fmt.Println("[RSS_HANDLER] error: " + err.Error())
-    }
+    parsed := helpers.Redify("https://www.reddit.com/r/symphonicmetal/new.json?sort=new&limit=1", "loveless", "data.children.#.title");
 
     fmt.Println("[RSS_HANDLER] finished rss most recent post is: " + parsed);
 }
