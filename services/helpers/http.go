@@ -1,4 +1,4 @@
-package managers;
+package services;
 
 import (
     "fmt"
@@ -13,27 +13,37 @@ import (
 // ################### REDIFY ###################### //
 
 // Send a request.
-func Redify(url string, userAgent string, key string) (string) {
-    req, err := GetBaseRequest(url userAgent);
-    client := GetClient();
-    resp, err := HandleRequest(client, req);
-    hash  := ParseResponse(resp, key);
-
-    return GetTitle(hash);
-}
+// func Redify(url string, userAgent string, key string) (string) {
+//     req, err := GetBaseRequest(url, userAgent);
+//
+//     if (err != nil) {
+//         HandleError(err)
+//     }
+//
+//     client := GetClient();
+//     resp, err := HandleRequest(client, req);
+//
+//     if (err != nil) {
+//         HandleError(err)
+//     }
+//
+//     hash  := ParseResponse(resp, key);
+//
+//     return GetTitle(hash);
+// }
 
 // Get the title of the given Result.
-func GetTitle(hash *Result) (string) {
-    return hash.Array()[0].String();
-}
+// func GetTitle(hash gjson.Result) (string) {
+//     return hash.Array()[0].String();
+// }
 
 //############### Generic http logic ############### //
 
 // Handle the response of the request.
-func ParseResponse(resp *Response, key string) (*Result) {
+func ParseResponse(resp *http.Response, key string) (gjson.Result) {
     body, err := ioutil.ReadAll(resp.Body);
 
-    if err != nil {
+    if (err != nil) {
         fmt.Printf("%g", err.Error());
     }
 
@@ -43,10 +53,10 @@ func ParseResponse(resp *Response, key string) (*Result) {
 }
 
 // Run a request.
-func HandleRequest(client *Client, request *Request) (*Response, error) {
+func HandleRequest(client *http.Client, request *http.Request) (*http.Response, error) {
     resp, err := client.Do(request);
 
-    if err != nil {
+    if (err != nil) {
         return nil, err;
     }
 
@@ -54,19 +64,24 @@ func HandleRequest(client *Client, request *Request) (*Response, error) {
 }
 
 // Build a base request.
-func GetBaseRequest(url string, userAgent string) (*Request, error) {
+func GetBaseRequest(url string, userAgent string) (*http.Request, error) {
     req, err := http.NewRequest("GET", url, nil)
 
-    if err != nil {
+    if (err != nil) {
         return nil, err;
     }
 
     req.Header.Set("User-Agent", userAgent)
 
-    return req;
+    return req, nil;
 }
 
 // get a base client.
-func GetClient() (*Client) {
+func GetClient() (*http.Client) {
     return &http.Client{Timeout: 10 * time.Second};
+}
+
+// handler a error.
+func HandleError(err error) {
+    fmt.Printf("%g", err.Error());
 }

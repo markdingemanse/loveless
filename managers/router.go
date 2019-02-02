@@ -6,14 +6,8 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/gin-gonic/autotls"
 
-    // behaviourModels "github.com/markdingemanse/loveless/models/behaviour"
     configs "github.com/markdingemanse/loveless/configs"
     handlers "github.com/markdingemanse/loveless/services"
-    helpers "github.com/markdingemanse/loveless/services/helpers"
-    knowledgeModels "github.com/markdingemanse/loveless/models/knowledge"
-
-    // "github.com/jinzhu/gorm"
-    //   _ "github.com/jinzhu/gorm/dialects/mysql"
 );
 
 // create the app engine and provision the created router.
@@ -44,20 +38,20 @@ func IsDevMode() bool {
 
 // Provisions the provided router with the needed routes.
 func routes(router *gin.Engine) *gin.Engine {
-    //basic ping test with a simple db check.
+    // TDDO:: default route is a rss redify check.
     router.GET("/", func(c *gin.Context) {
-        uri := helpers.DatabaseUrl();
-        db := helpers.OpenDbConnection(uri);
-
-        model := knowledgeModels.CreateModel();
-        helpers.SelectTable("rss", db).First(&model);
-        fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + model.GetFirstPost());
+        // uri := helpers.DatabaseUrl();
+        // db := helpers.OpenDbConnection(uri);
+        //
+        // model := knowledgeModels.CreateModel();
+        // helpers.SelectTable("rss", db).First(&model);
+        // fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + model.GetFirstPost());
 
         f := handlers.Functions("rss");
         f();
 
         c.String(200, "pong");
-        db.Close();
+        // db.Close();
     });
 
     return router;
