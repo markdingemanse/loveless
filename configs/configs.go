@@ -21,6 +21,10 @@ func IsDevMode() bool {
     return false;
 }
 
+func Secret() string {
+    return Config("WIRED_SECRET");
+}
+
 // print a like of info to the lain log.
 func Info(line string) {
     f, err := os.OpenFile("../logs/lain.log", os.O_APPEND|os.O_WRONLY, 0644);

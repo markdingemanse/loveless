@@ -38,20 +38,21 @@ func IsDevMode() bool {
 
 // Provisions the provided router with the needed routes.
 func routes(router *gin.Engine) *gin.Engine {
-    // TDDO:: default route is a rss redify check.
     router.GET("/", func(c *gin.Context) {
-        // uri := helpers.DatabaseUrl();
-        // db := helpers.OpenDbConnection(uri);
-        //
-        // model := knowledgeModels.CreateModel();
-        // helpers.SelectTable("rss", db).First(&model);
-        // fmt.Printf("%v\n", "[TEST] The message of the first post seems to be: " + model.GetFirstPost());
+        c.String(200, "I love you");
+    });
+
+    authorized := router.Group("/", gin.BasicAuth(gin.Accounts{
+       "love": configs.Secret(),
+    }));
+
+    authorized.GET("/question", func(c *gin.Context) {
+        ResetLog(configs.Config("LOG_PATH"));
 
         f := handlers.Functions("rss");
         f();
 
-        c.String(200, "pong");
-        // db.Close();
+        c.JSON(200, ReadLog(configs.Config("LOG_PATH")));
     });
 
     return router;
