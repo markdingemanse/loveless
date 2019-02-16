@@ -6,7 +6,12 @@ import (
 
 type Rss struct {
   gorm.Model
-  FirstPost   string
+  FirstPost string
+}
+
+type RedifyURI struct {
+    gorm.Model
+    Uri string
 }
 
 // get the first_post from the model Rss
@@ -14,6 +19,10 @@ func (rss Rss) GetFirstPost() string {
     return rss.FirstPost
 }
 
-func CreateModel() Rss {
+func CreateRedifyRssModel() Rss {
     return Rss{};
+}
+
+func CreateRedifyUriModels() []RedifyURI {
+    return []RedifyURI{};
 }

@@ -15,16 +15,23 @@ func Functions(key string) func() {
 
 // Handle the rss task.
 func rss() {
+
+    redifycsv := tasks.DBRedifyURI();
+
+    fmt.Println(redifycsv);
+
     recentPost := tasks.HttpRedify("https://www.reddit.com/r/symphonicmetal/new.json?sort=new&limit=1", "loveless", "data.children.#.data.title");
     registerdPost := tasks.DbRedify();
 
-    configs.Info("[RSS_HANDLER] finished rss most recent API post is: " + recentPost);
+    // configs.Info("[RSS_HANDLER] finished rss most recent API post is: " + recentPost);
     configs.Info("[RSS_HANDLER] finished rss most recent REGISTERED post is: " + registerdPost);
-
+        configs.Info(recentPost + " : " + registerdPost);
     if (recentPost == registerdPost) {
+
         return;
     }
 
+    configs.Info("[RSS_HANDLER] There seems to be a new post on redit for the option: [symphonicmetal] my love <3");
     succes := tasks.UpdateRedify(recentPost);
 
     if (!succes) {

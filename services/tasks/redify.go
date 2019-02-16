@@ -39,8 +39,8 @@ func DbRedify() (string) {
     uri := helpers.DatabaseUrl();
     db := helpers.OpenDbConnection(uri);
 
-    model := knowledgeModels.CreateModel();
-    helpers.SelectTable("rss", db).Last(&model);
+    model := knowledgeModels.CreateRedifyRssModel();
+    helpers.SelectTable("redify_rss", db).Last(&model);
 
     return model.GetFirstPost();
 }
@@ -51,7 +51,17 @@ func UpdateRedify(recentPost string) (bool) {
     db := helpers.OpenDbConnection(uri);
 
     redify := knowledgeModels.Rss{FirstPost: recentPost};
-    helpers.SelectTable("rss", db).Create(&redify)
+    helpers.SelectTable("redify_rss", db).Create(&redify)
 
     return true;
+}
+
+func DBRedifyURI() ([]knowledgeModels.RedifyURI) {
+    uri := helpers.DatabaseUrl();
+    db := helpers.OpenDbConnection(uri);
+
+    models := knowledgeModels.CreateRedifyUriModels();
+    helpers.SelectTable("redify_uri", db).Find(&models);
+
+    return models;
 }
