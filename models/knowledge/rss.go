@@ -12,6 +12,7 @@ type Rss struct {
 type RedifyURI struct {
     gorm.Model
     Uri string
+    Slug string
 }
 
 // get the first_post from the model Rss

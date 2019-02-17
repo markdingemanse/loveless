@@ -1,0 +1,14 @@
+export GOPATH=$(go env GOPATH)
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+export PORT=8080
+
+export LOVELESS_MODE=""
+
+export LOVELESS_DB_USER=
+export LOVELESS_DB_PASSWORD=
+export LOVELESS_DB_NAME=
+
+export WIRED_SECRET=""
+
+export LOG_PATH="....lain.log"

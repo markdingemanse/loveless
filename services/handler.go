@@ -14,27 +14,50 @@ func Functions(key string) func() {
 }
 
 // Handle the rss task.
-func rss() {
+// func rss() {
+//
+//     redifycsv := tasks.DBRedifyURI();
+//
+//     fmt.Println(redifycsv);
+//
+//     recentPost := tasks.HttpRedify("https://www.reddit.com/r/symphonicmetal/new.json?sort=new&limit=1", "loveless", "data.children.#.data.title");
+//     registerdPost := tasks.DbRedify();
+//
+//     // configs.Info("[RSS_HANDLER] finished rss most recent API post is: " + recentPost);
+//     configs.Info("[RSS_HANDLER] finished rss most recent REGISTERED post is: " + registerdPost);
+//         configs.Info(recentPost + " : " + registerdPost);
+//     if (recentPost == registerdPost) {
+//
+//         return;
+//     }
+//
+//     configs.Info("[RSS_HANDLER] There seems to be a new post on redit for the option: [symphonicmetal] my love <3");
+//     succes := tasks.UpdateRedify(recentPost);
+//
+//     if (!succes) {
+//         fmt.Println("[RSS_HANDLER] Error occured when trying to insert new redify reccord");
+//     }
+// }
 
+func rss() {
+    configs.Info("[RSS_HANDLER] Starting the process of redify.");
     redifycsv := tasks.DBRedifyURI();
 
-    fmt.Println(redifycsv);
+    for _, element := range redifycsv {
+        configs.Info("[RSS_HANDLER] Running redify for the option : [" + element.Slug + "]");
+        recentPost := tasks.HttpRedify(element.Uri, "loveless", "data.children.#.data.title");
+        registerdPost := tasks.DbRedify();
 
-    recentPost := tasks.HttpRedify("https://www.reddit.com/r/symphonicmetal/new.json?sort=new&limit=1", "loveless", "data.children.#.data.title");
-    registerdPost := tasks.DbRedify();
+        if (recentPost == registerdPost) {
+            configs.Info("[RSS_HANDLER] There are no new post on redit for the option: [" + element.Slug + "]");
+            return;
+        }
 
-    // configs.Info("[RSS_HANDLER] finished rss most recent API post is: " + recentPost);
-    configs.Info("[RSS_HANDLER] finished rss most recent REGISTERED post is: " + registerdPost);
-        configs.Info(recentPost + " : " + registerdPost);
-    if (recentPost == registerdPost) {
+        configs.Info("[RSS_HANDLER] There seems to be a new post on redit for the option: [" + element.Slug + "]");
+        succes := tasks.UpdateRedify(recentPost);
 
-        return;
-    }
-
-    configs.Info("[RSS_HANDLER] There seems to be a new post on redit for the option: [symphonicmetal] my love <3");
-    succes := tasks.UpdateRedify(recentPost);
-
-    if (!succes) {
-        fmt.Println("[RSS_HANDLER] Error occured when trying to insert new redify reccord");
+        if (!succes) {
+            fmt.Println("[RSS_HANDLER] Error occured when trying to insert new redify reccord");
+        }
     }
 }
