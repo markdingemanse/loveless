@@ -4,8 +4,6 @@ import (
     "log"
     "net/smtp"
 
-    "gopkg.in/gomail.v2"
-
     configs "github.com/markdingemanse/loveless/configs"
 )
 
@@ -17,29 +15,17 @@ func Communicate(body string) {
     server := configs.Config("LOVELESS_MAIL_URL")
     port := configs.Config("LOVELESS_MAIL_PORT")
 
-    // msg := "From: " + from + "\n" +
-    //     "To: " + to + "\n" +
-    //     "Subject: " + subject +"\n\n" +
-    //     body
-    //
-    // err := smtp.SendMail(server + ":" + port,
-    //     smtp.PlainAuth("", from, pass, server),
-    //     from, []string{to}, []byte(msg))
-    //
-    // if err != nil {
-    //     log.Printf("smtp error: %s", err)
-    //     return
-    // }
+    msg := "From: " + from + "\n" +
+        "To: " + to + "\n" +
+        "Subject: " + subject +"\n\n" +
+        body
 
-    m := gomail.NewMessage()
-    m.SetHeader("From", from)
-    m.SetHeader("To", to)
-    m.SetHeader("Subject", subject)
-    m.SetBody("text/html", "Hello <b>TEST</b>! " + body)
+    err := smtp.SendMail(server + ":" + port,
+        smtp.PlainAuth("", from, pass, server),
+        from, []string{to}, []byte(msg))
 
-    // Send the email
-    d := gomail.NewPlainDialer(server, port, from, pass)
-    if err := d.DialAndSend(m); err != nil {
-        panic(err)
+    if err != nil {
+        log.Printf("smtp error: %s", err)
+        return
     }
 }
