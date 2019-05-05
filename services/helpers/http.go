@@ -7,35 +7,7 @@ import (
     "time"
 
     "github.com/tidwall/gjson"
-    // configs "github.com/markdingemanse/loveless/configs"
 );
-
-// ################### REDIFY ###################### //
-
-// Send a request.
-// func Redify(url string, userAgent string, key string) (string) {
-//     req, err := GetBaseRequest(url, userAgent);
-//
-//     if (err != nil) {
-//         HandleError(err)
-//     }
-//
-//     client := GetClient();
-//     resp, err := HandleRequest(client, req);
-//
-//     if (err != nil) {
-//         HandleError(err)
-//     }
-//
-//     hash  := ParseResponse(resp, key);
-//
-//     return GetTitle(hash);
-// }
-
-// Get the title of the given Result.
-// func GetTitle(hash gjson.Result) (string) {
-//     return hash.Array()[0].String();
-// }
 
 //############### Generic http logic ############### //
 
